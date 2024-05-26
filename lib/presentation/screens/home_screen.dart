@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:movie_app/config/themes/app_colors.dart';
 import 'package:movie_app/config/themes/extensions/app_text_style.dart';
 import 'package:movie_app/presentation/cubit/location_cubit.dart';
@@ -15,8 +16,27 @@ import 'package:movie_app/presentation/widgets/section_title.dart';
 import 'package:movie_app/utils/constants/enums.dart';
 import 'package:movie_app/utils/extensions/app_theme_extension.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  @override
+  void initState() {
+    WidgetsBinding.instance.addPostFrameCallback(
+      (_) async {
+        bool result = await InternetConnectionChecker().hasConnection;
+        if (result && mounted) {
+          context.read<TopRatedMoviesCubit>().fetchMovies();
+          context.read<NowPlayingMoviesCubit>().fetchMovies();
+        }
+      },
+    );
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {

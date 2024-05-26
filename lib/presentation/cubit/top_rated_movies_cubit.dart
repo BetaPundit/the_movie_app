@@ -1,5 +1,5 @@
 import 'package:flutter/widgets.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:injectable/injectable.dart';
 import 'package:movie_app/domain/models/movie_response.dart';
 import 'package:movie_app/domain/repositories/movies_repository.dart';
@@ -8,7 +8,7 @@ import 'package:movie_app/utils/constants/enums.dart';
 import 'package:movie_app/utils/resources/data_state.dart';
 
 @injectable
-class TopRatedMoviesCubit extends Cubit<MoviesState> {
+class TopRatedMoviesCubit extends HydratedCubit<MoviesState> {
   TopRatedMoviesCubit(this._moviesRepository) : super(const MoviesState()) {
     scrollController.addListener(() {
       if (!state.status.isLoading) {
@@ -58,4 +58,10 @@ class TopRatedMoviesCubit extends Cubit<MoviesState> {
       fetchMovies();
     }
   }
+
+  @override
+  MoviesState fromJson(Map<String, dynamic> json) => MoviesState.fromJson(json);
+
+  @override
+  Map<String, dynamic> toJson(MoviesState state) => state.toJson();
 }

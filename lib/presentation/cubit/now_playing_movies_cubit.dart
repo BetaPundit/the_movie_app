@@ -1,5 +1,5 @@
 import 'package:flutter/widgets.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:injectable/injectable.dart';
 import 'package:movie_app/domain/repositories/movies_repository.dart';
 import 'package:movie_app/presentation/cubit/movies_state.dart';
@@ -7,7 +7,7 @@ import 'package:movie_app/utils/constants/enums.dart';
 import 'package:movie_app/utils/resources/data_state.dart';
 
 @injectable
-class NowPlayingMoviesCubit extends Cubit<MoviesState> {
+class NowPlayingMoviesCubit extends HydratedCubit<MoviesState> {
   NowPlayingMoviesCubit(this._moviesRepository) : super(const MoviesState());
 
   final MoviesRepository _moviesRepository;
@@ -27,4 +27,10 @@ class NowPlayingMoviesCubit extends Cubit<MoviesState> {
       emit(state.copyWith(status: NetworkStatus.failure));
     }
   }
+
+  @override
+  MoviesState fromJson(Map<String, dynamic> json) => MoviesState.fromJson(json);
+
+  @override
+  Map<String, dynamic> toJson(MoviesState state) => state.toJson();
 }

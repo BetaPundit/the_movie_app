@@ -1,6 +1,8 @@
 import 'dart:ui' as ui;
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:movie_app/config/themes/app_colors.dart';
 import 'package:movie_app/config/themes/extensions/app_text_style.dart';
 import 'package:movie_app/presentation/widgets/custom_card_bg_clipper.dart';
 import 'package:movie_app/presentation/widgets/custom_card_fg_clipper.dart';
@@ -38,11 +40,20 @@ class NowPlayingMovieCard extends StatelessWidget {
           // Background Image
           ClipPath(
             clipper: CustomCardBgClipper(),
-            child: Image.network(
-              '${Constants.baseImageUrl}${imageUrl ?? ''}',
+            child: CachedNetworkImage(
+              imageUrl: '${Constants.baseImageUrl}${imageUrl ?? ''}',
               fit: BoxFit.cover,
               width: double.infinity,
               height: double.infinity,
+              progressIndicatorBuilder: (context, url, downloadProgress) =>
+                  Center(
+                child:
+                    CircularProgressIndicator(value: downloadProgress.progress),
+              ),
+              errorWidget: (context, url, error) => const Icon(
+                Icons.error,
+                color: AppColors.textMedium,
+              ),
             ),
           ),
 

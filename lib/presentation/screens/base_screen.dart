@@ -25,10 +25,10 @@ class _BaseScreenState extends State<BaseScreen> {
     MultiBlocProvider(
       providers: [
         BlocProvider<TopRatedMoviesCubit>(
-          create: (context) => locator<TopRatedMoviesCubit>()..fetchMovies(),
+          create: (context) => locator<TopRatedMoviesCubit>(),
         ),
         BlocProvider<NowPlayingMoviesCubit>(
-          create: (context) => locator<NowPlayingMoviesCubit>()..fetchMovies(),
+          create: (context) => locator<NowPlayingMoviesCubit>(),
         ),
       ],
       child: const HomeScreen(),

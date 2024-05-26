@@ -16,7 +16,7 @@ class LocationState with _$LocationState {
 
   const LocationState._();
 
-  String get streetAddress => '${place?.street}';
+  String get streetAddress => place?.street ?? '--';
 
   String get subAddress =>
       '${place?.locality}, ${place?.subAdministrativeArea}, ${place?.postalCode}';

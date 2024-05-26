@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:movie_app/config/themes/app_colors.dart';
@@ -50,11 +51,20 @@ class TopRatedMovieCard extends StatelessWidget {
             children: [
               ClipRRect(
                 borderRadius: BorderRadius.circular(18),
-                child: Image.network(
-                  '${Constants.baseImageUrl}${imageUrl ?? ''}',
-                  height: 180,
-                  width: double.infinity,
+                child: CachedNetworkImage(
+                  imageUrl: '${Constants.baseImageUrl}${imageUrl ?? ''}',
                   fit: BoxFit.cover,
+                  width: double.infinity,
+                  height: 180,
+                  progressIndicatorBuilder: (context, url, downloadProgress) =>
+                      Center(
+                    child: CircularProgressIndicator(
+                        value: downloadProgress.progress),
+                  ),
+                  errorWidget: (context, url, error) => const Icon(
+                    Icons.error,
+                    color: AppColors.textMedium,
+                  ),
                 ),
               ),
               Positioned(
